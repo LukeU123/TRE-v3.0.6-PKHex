@@ -12,7 +12,7 @@ namespace PKHeX.Core;
 /// each sector holding 0xFF4 bytes of data (no 0xF80 limit), 24 PC boxes of 30.
 /// Sector 0 = trainer block (SaveBlock2), 1-4 = SaveBlock1 (party etc.), 5-19 = PC storage.
 /// </remarks>
-public sealed class SAV3TRE : SaveFile
+public sealed class SAV3TRE : SaveFile, IBoxDetailName
 {
     public const int SIZE_SECTOR = 0x1000;
     public const int SIZE_SECTOR_DATA = 0xFF4;
@@ -203,6 +203,7 @@ public sealed class SAV3TRE : SaveFile
     public override int GetBoxOffset(int box) => OFS_BOXES + (box * COUNT_SLOTS * SIZE_STORED);
 
     public override bool HasParty => true;
+    public override bool HasBox => true;
     public override int PartyCount
     {
         get => LargeData[OFS_PARTYCOUNT];
