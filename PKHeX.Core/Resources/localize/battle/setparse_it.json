@@ -1,0 +1,23 @@
+{
+  "LineLength": "La riga ha superato la lunghezza massima supportata: {0}",
+  "TokenUnknown": "Non riconosciuto: {0}",
+  "TokenFailParse": "Errore di analisi: {0}",
+  "MoveCountTooMany": "Troppe mosse specificate: {0}",
+  "MoveSlotAlreadyUsed": "Slot mossa già utilizzato: {0}",
+  "MoveDuplicate": "Mossa duplicata specificata: {0}",
+  "MoveUnrecognized": "Mossa non riconosciuta: {0}",
+  "ItemUnrecognized": "Strumento tenuto non riconosciuto: {0}",
+  "AbilityDeclaration": "Abilità già dichiarata: {0}",
+  "AbilityUnrecognized": "Abilità non riconosciuta: {0}",
+  "AbilityAlreadySpecified": "Abilità già specificata: {0}",
+  "NatureUnrecognized": "Natura non riconosciuta: {0}",
+  "NatureAlreadySpecified": "Natura già specificata: {0}",
+  "HiddenPowerUnknownType": "Tipo di Introforza non riconosciuto: {0}",
+  "HiddenPowerIncompatibleIVs": "Tipo di Introforza incompatibile con gli IV: {0}",
+  "NatureEffortAmpDeclaration": "Natura / amplificatore di sforzo già dichiarato: {0}",
+  "NatureEffortAmpUnknown": "Amplificatore di sforzo della natura sconosciuto: {0}",
+  "NatureEffortAmpAlreadySpecified": "Amplificatore di sforzo della natura già specificato: {0}",
+  "NatureEffortAmpConflictNature": "L'amplificatore di sforzo dichiarato è in conflitto con la natura specificata in precedenza.",
+  "NatureAmpNoPlus": "Manca il '+' nell'amplificatore della natura.",
+  "NatureAmpNoMinus": "Manca il '-' nell'amplificatore della natura."
+}

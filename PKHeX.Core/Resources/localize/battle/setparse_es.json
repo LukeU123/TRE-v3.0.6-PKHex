@@ -1,0 +1,23 @@
+{
+  "LineLength": "La línea excedió la longitud máxima admitida: {0}",
+  "TokenUnknown": "No reconocido: {0}",
+  "TokenFailParse": "Error de análisis sintáctico: {0}",
+  "MoveCountTooMany": "Se han especificado demasiados movimientos: {0}",
+  "MoveSlotAlreadyUsed": "Ranura de movimiento ya utilizada: {0}",
+  "MoveDuplicate": "Movimiento duplicado especificado: {0}",
+  "MoveUnrecognized": "Movimiento no reconocido: {0}",
+  "ItemUnrecognized": "Objeto equipado no reconocido: {0}",
+  "AbilityDeclaration": "Habilidad ya declarada: {0}",
+  "AbilityUnrecognized": "Habilidad no reconocida: {0}",
+  "AbilityAlreadySpecified": "Habilidad ya especificada: {0}",
+  "NatureUnrecognized": "Naturaleza no reconocida: {0}",
+  "NatureAlreadySpecified": "Naturaleza ya especificada: {0}",
+  "HiddenPowerUnknownType": "Tipo de Poder Oculto no reconocido: {0}",
+  "HiddenPowerIncompatibleIVs": "Tipo de Poder Oculto incompatible con los IVs: {0}",
+  "NatureEffortAmpDeclaration": "Naturaleza / amplificador de esfuerzo ya declarado: {0}",
+  "NatureEffortAmpUnknown": "Amplificador de esfuerzo de naturaleza desconocido: {0}",
+  "NatureEffortAmpAlreadySpecified": "Amplificador de esfuerzo de naturaleza ya especificado: {0}",
+  "NatureEffortAmpConflictNature": "El amplificador de esfuerzo declarado entra en conflicto con la naturaleza especificada anteriormente.",
+  "NatureAmpNoPlus": "Falta el '+' en el amplificador de naturaleza.",
+  "NatureAmpNoMinus": "Falta el '-' en el amplificador de naturaleza."
+}

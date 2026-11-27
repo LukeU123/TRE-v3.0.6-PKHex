@@ -1,0 +1,23 @@
+{
+  "LineLength": "Zeile hat die maximal unterstützte Länge überschritten: {0}",
+  "TokenUnknown": "Unbekannt: {0}",
+  "TokenFailParse": "Fehler beim Parsen: {0}",
+  "MoveCountTooMany": "Zu viele Attacken angegeben: {0}",
+  "MoveSlotAlreadyUsed": "Attacken-Slot bereits belegt: {0}",
+  "MoveDuplicate": "Doppelte Attacke angegeben: {0}",
+  "MoveUnrecognized": "Attacke nicht erkannt: {0}",
+  "ItemUnrecognized": "Getragenes Item nicht erkannt: {0}",
+  "AbilityDeclaration": "Fähigkeit bereits deklariert: {0}",
+  "AbilityUnrecognized": "Fähigkeit nicht erkannt: {0}",
+  "AbilityAlreadySpecified": "Fähigkeit bereits angegeben: {0}",
+  "NatureUnrecognized": "Wesen nicht erkannt: {0}",
+  "NatureAlreadySpecified": "Wesen bereits angegeben: {0}",
+  "HiddenPowerUnknownType": "Kraftreserve-Typ nicht erkannt: {0}",
+  "HiddenPowerIncompatibleIVs": "Kraftreserve-Typ ist nicht kompatibel mit den IVs: {0}",
+  "NatureEffortAmpDeclaration": "Wesen / Kraftverstärker bereits deklariert: {0}",
+  "NatureEffortAmpUnknown": "Unbekannter Kraftverstärker für das Wesen: {0}",
+  "NatureEffortAmpAlreadySpecified": "Kraftverstärker für das Wesen bereits angegeben: {0}",
+  "NatureEffortAmpConflictNature": "Der deklarierte Kraftverstärker steht im Widerspruch zum zuvor angegebenen Wesen.",
+  "NatureAmpNoPlus": "Fehlendes '+' beim Wesen-Verstärker.",
+  "NatureAmpNoMinus": "Fehlendes '-' beim Wesen-Verstärker."
+}
