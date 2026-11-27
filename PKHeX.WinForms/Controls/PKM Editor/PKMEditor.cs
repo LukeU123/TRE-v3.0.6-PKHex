@@ -1348,13 +1348,15 @@ public sealed partial class PKMEditor : UserControl, IMainEditor
             return; // above statement triggers the event again.
         }
 
+        if (CB_ExtraBytes.Items.Count == 0 || string.IsNullOrEmpty(CB_ExtraBytes.Text))
+            return; // no spare bytes for this format: never write a stale offset
         int offset = Convert.ToInt32(CB_ExtraBytes.Text, 16);
         Entity.Data[offset] = (byte)value;
     }
 
     private void UpdateExtraByteIndex(object sender, EventArgs e)
     {
-        if (CB_ExtraBytes.Items.Count == 0)
+        if (CB_ExtraBytes.Items.Count == 0 || string.IsNullOrEmpty(CB_ExtraBytes.Text))
             return;
         // Byte changed, need to refresh the Text box for the byte's value.
         var offset = Convert.ToInt32(CB_ExtraBytes.Text, 16);

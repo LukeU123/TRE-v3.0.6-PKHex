@@ -244,7 +244,9 @@ public partial class PKMEditor
 
         TID_Trainer.LoadTrainer(pk, pk.Format);
 
-        // Load Extrabyte Value
+        // Load Extrabyte Value (none for formats without spare bytes, e.g. TRE)
+        if (CB_ExtraBytes.Items.Count == 0 || string.IsNullOrEmpty(CB_ExtraBytes.Text))
+            return;
         var offset = Convert.ToInt32(CB_ExtraBytes.Text, 16);
         var value = pk.Data[offset];
         TB_ExtraByte.Text = value.ToString();
