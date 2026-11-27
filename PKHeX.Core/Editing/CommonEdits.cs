@@ -143,7 +143,9 @@ public static class CommonEdits
                 nature = 0; // default valid
 
             var format = pk.Format;
-            if (format >= 8)
+            if (pk is PK3TRE) // nature is a modifier, independent of the PID
+                pk.Nature = nature;
+            else if (format >= 8)
                 pk.StatAlignment = nature;
             else if (format is 3 or 4)
                 pk.SetPIDNature(nature);

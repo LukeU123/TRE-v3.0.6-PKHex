@@ -1004,13 +1004,15 @@ public sealed partial class PKMEditor : UserControl, IMainEditor
         if (FieldsLoaded)
             Entity.PID = Util.GetHexValue(TB_PID.Text);
 
-        if (sender == UC_Gender)
+        if (sender == CB_Nature && Entity is PK3TRE)
+            Entity.Nature = (Nature)WinFormsUtil.GetIndex(CB_Nature); // TRE: nature is a modifier; the PID stays
+        else if (sender == UC_Gender)
             Entity.SetPIDGender(Entity.Gender);
         else if (sender == CB_Nature && Entity.Nature != (Nature)WinFormsUtil.GetIndex(CB_Nature))
             Entity.SetPIDNature((Nature)WinFormsUtil.GetIndex(CB_Nature));
         else if (sender == BTN_RerollPID)
             Entity.SetPIDGender(Entity.Gender);
-        else if (sender == CB_Ability && CB_Ability.SelectedIndex != Entity.PIDAbility && Entity.PIDAbility > -1)
+        else if (sender == CB_Ability && Entity is not PK3TRE && CB_Ability.SelectedIndex != Entity.PIDAbility && Entity.PIDAbility > -1) // TRE: ability slot is its own field
             Entity.SetAbilityIndex(CB_Ability.SelectedIndex);
 
         TB_PID.Text = Entity.PID.ToString("X8");

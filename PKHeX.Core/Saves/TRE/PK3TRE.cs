@@ -70,7 +70,22 @@ public sealed class PK3TRE : PKM, IContestStats
     public override Span<byte> OriginalTrainerTrash => Data.Slice(0x14, 7);
 
     #region Header
-    public override uint PID { get => ReadUInt32LittleEndian(Data); set => WriteUInt32LittleEndian(Data, value); }
+    /// <summary>
+    /// Changing the PID keeps the nature: the hack stores it as a modifier on top of the PID, so the modifier is
+    /// recomputed for the new value. (Shininess is left to follow the PID, as PKHeX's reroll logic expects.)
+    /// </summary>
+    public override uint PID
+    {
+        get => ReadUInt32LittleEndian(Data);
+        set
+        {
+            if (value == PID)
+                return;
+            var nature = StatAlignment;
+            WriteUInt32LittleEndian(Data, value);
+            StatAlignment = nature;
+        }
+    }
     public override uint EncryptionConstant { get => PID; set { } }
     public override uint ID32 { get => ReadUInt32LittleEndian(Data[0x04..]); set => WriteUInt32LittleEndian(Data[0x04..], value); }
     public override ushort TID16 { get => ReadUInt16LittleEndian(Data[0x04..]); set => WriteUInt16LittleEndian(Data[0x04..], value); }
@@ -266,7 +281,8 @@ public sealed class PK3TRE : PKM, IContestStats
     public override int AbilityNumber { get => 1 << AbilitySlot; set => AbilitySlot = value switch { 4 => 2, 2 => 1, _ => 0 }; }
     public override void RefreshAbility(int n) => AbilitySlot = Math.Clamp(n, 0, 2);
 
-    public override Nature Nature { get => (Nature)(PID % 25); set { } }
+    // The nature the game uses (PID nature adjusted by the hidden nature modifier). Setting it never changes the PID.
+    public override Nature Nature { get => StatAlignment; set => StatAlignment = value; }
 
     /// <summary> Stat nature (the hack's "hidden nature", e.g. after using a Mint). </summary>
     public override Nature StatAlignment
@@ -274,7 +290,7 @@ public sealed class PK3TRE : PKM, IContestStats
         get
         {
             var n = (int)(PID % 25) ^ HiddenNatureModifier;
-            return n < 25 ? (Nature)n : Nature;
+            return n < 25 ? (Nature)n : (Nature)(PID % 25);
         }
         set => HiddenNatureModifier = (int)(PID % 25) ^ (int)value;
     }
