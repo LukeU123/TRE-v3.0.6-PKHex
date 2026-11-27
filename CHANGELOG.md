@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.1.0 (27 Nov 2026)
+## v0.2 (27 Nov 2026)
 
-First release, based on PKHeX 26.10.18.
+Based on PKHeX 26.10.18. Every feature was tested in the game.
 
 - Opens and saves Team Rocket Edition v3.0.6 (English) saves, with valid checksums.
 - Party and all 24 boxes (Box tab), plus box names.

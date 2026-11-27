@@ -13,7 +13,7 @@ A fork of [PKHeX](https://github.com/kwsch/PKHeX) that can read and write Team R
 [![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue)](LICENSE)
 [![Based on PKHeX](https://img.shields.io/badge/based%20on-PKHeX%2026.10.18-orange)](https://github.com/kwsch/PKHeX)
 
-<img src="docs/images/editor_main.png" alt="PKHeX-TRE editing a Tentacool from a Team Rocket Edition save" width="760">
+<img src="docs/images/editor_main.png" alt="PKHeX-TRE showing Box 1 of a Team Rocket Edition save" width="760">
 
 </div>
 
@@ -55,7 +55,13 @@ All species stats, learnsets, item, move and ability names, and map names are pu
 
 PKHeX's normal legality checker is switched off for these Pokémon, because its rules don't apply to a romhack. Only the move check runs.
 
-<img src="docs/images/editor_stats.png" alt="Stats tab" width="760">
+## Screenshots
+
+| Moves (checked against the hack's learnsets) | Stats |
+|---|---|
+| <img src="docs/images/editor_moves.png" alt="Moves tab" width="420"> | <img src="docs/images/editor_stats.png" alt="Stats tab" width="420"> |
+| **Bag: the hack's 8 pockets** | **Trainer Info** |
+| <img src="docs/images/editor_bag.png" alt="Inventory editor" width="300"> | <img src="docs/images/editor_trainer.png" alt="Trainer editor" width="380"> |
 
 ## Download
 
