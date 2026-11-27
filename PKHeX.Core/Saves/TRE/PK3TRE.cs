@@ -194,10 +194,11 @@ public sealed class PK3TRE : PKM, IContestStats
     #endregion
 
     #region Block M (0x44)
-    public byte PokerusState { get => Data[0x44]; set => Data[0x44] = value; }
-    public override int PokerusDays { get => PokerusState & 0xF; set => PokerusState = (byte)((PokerusState & ~0xF) | (value & 0xF)); }
-    public override int PokerusStrain { get => PokerusState >> 4; set => PokerusState = (byte)((PokerusState & 0xF) | ((value & 0xF) << 4)); }
-    public override ushort MetLocation { get => Data[0x45]; set => Data[0x45] = (byte)value; }
+    // TRE widened the met location to 16 bits, taking the byte vanilla uses for Pokérus.
+    // (Verified on a real save: caught Pokémon have locations above 255 and no Pokérus byte here.)
+    public override int PokerusDays { get => 0; set { } }
+    public override int PokerusStrain { get => 0; set { } }
+    public override ushort MetLocation { get => ReadUInt16LittleEndian(Data[0x44..]); set => WriteUInt16LittleEndian(Data[0x44..], value); }
 
     private ushort Origins { get => ReadUInt16LittleEndian(Data[0x46..]); set => WriteUInt16LittleEndian(Data[0x46..], value); }
     public override byte MetLevel { get => (byte)(Origins & 0x7F); set => Origins = (ushort)((Origins & ~0x7F) | (value & 0x7F)); }
