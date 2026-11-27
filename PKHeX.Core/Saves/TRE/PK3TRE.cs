@@ -8,7 +8,7 @@ namespace PKHeX.Core;
 /// </summary>
 /// <remarks>
 /// Same size, encryption and shuffling as a Gen 3 <see cref="PK3"/>, but the fields are packed differently:
-/// 11-bit species and moves, 10-bit held item, 6-bit ball, 12-character nicknames, hidden nature and shiny modifiers,
+/// 11-bit species and moves, 10-bit held item, 6-bit ball, 10-character nicknames, hidden nature and shiny modifiers,
 /// three ability slots, Tera type and hyper training.
 /// Blocks are stored unshuffled in this object as G(0x20) A(0x2C) E(0x38) M(0x44).
 /// </remarks>
@@ -55,12 +55,12 @@ public sealed class PK3TRE : PKM, IContestStats
     public override ushort MaxSpeciesID => TREData.MaxSpecies;
     public override int MaxAbilityID => TREData.Abilities.Length - 1;
     public override int MaxItemID => Math.Min(TREData.MaxRawItem, TREData.Items.Length - 1);
-    public override int MaxBallID => (int)Core.Ball.Beast;
+    public override int MaxBallID => (int)Core.Ball.Strange;
     public override GameVersion MaxGameID => Legal.MaxGameID_3;
     public override int MaxIV => 31;
     public override int MaxEV => EffortValues.Max255;
     public override int MaxStringLengthTrainer => 7;
-    public override int MaxStringLengthNickname => 12;
+    public override int MaxStringLengthNickname => 10;
     public override int TrashCharCountTrainer => 7;
     public override int TrashCharCountNickname => 10;
     #endregion
@@ -88,36 +88,18 @@ public sealed class PK3TRE : PKM, IContestStats
     private ushort HPLostShiny { get => ReadUInt16LittleEndian(Data[0x1E..]); set => WriteUInt16LittleEndian(Data[0x1E..], value); }
     public bool ShinyModifier { get => (HPLostShiny & (1 << 14)) != 0; set => HPLostShiny = (ushort)((HPLostShiny & ~(1 << 14)) | (value ? 1 << 14 : 0)); }
 
+    // Nicknames: the first 10 characters only. Real saves show the hack keeps something else in the bytes
+    // vanilla expansion uses for characters 11/12 (EXP's high byte and the ball word), so those are never touched.
     public override string Nickname
     {
-        get
-        {
-            Span<byte> buffer = stackalloc byte[13];
-            GetNicknameBytes(buffer);
-            buffer[12] = StringConverter3.TerminatorByte;
-            return StringConverter3.GetString(buffer, Language);
-        }
+        get => StringConverter3.GetString(NicknameTrash, Language);
         set
         {
-            Span<byte> buffer = stackalloc byte[12];
+            Span<byte> buffer = stackalloc byte[10];
             buffer.Fill(StringConverter3.TerminatorByte);
-            StringConverter3.SetString(buffer, value, 12, Language, StringConverterOption.None);
-            SetNicknameBytes(buffer);
+            StringConverter3.SetString(buffer, value, 10, Language, StringConverterOption.None);
+            buffer.CopyTo(NicknameTrash);
         }
-    }
-
-    private void GetNicknameBytes(Span<byte> dest)
-    {
-        NicknameTrash.CopyTo(dest);
-        dest[10] = Nickname11;
-        dest[11] = Nickname12;
-    }
-
-    private void SetNicknameBytes(ReadOnlySpan<byte> src)
-    {
-        src[..10].CopyTo(NicknameTrash);
-        Nickname11 = src[10];
-        Nickname12 = src[11];
     }
 
     public override string OriginalTrainerName
@@ -136,8 +118,8 @@ public sealed class PK3TRE : PKM, IContestStats
     public override int HeldItem { get => G2 & 0x3FF; set => G2 = (ushort)((G2 & ~0x3FF) | (value & 0x3FF)); }
 
     private uint G4 { get => ReadUInt32LittleEndian(Data[0x24..]); set => WriteUInt32LittleEndian(Data[0x24..], value); }
-    public override uint EXP { get => G4 & 0x1FFFFF; set => G4 = (G4 & ~0x1FFFFFu) | (value & 0x1FFFFF); }
-    private byte Nickname11 { get => (byte)(G4 >> 21); set => G4 = (G4 & ~(0xFFu << 21)) | ((uint)value << 21); }
+    // The game reads EXP as the low 24 bits (verified in-game); the top byte belongs to something else and is preserved.
+    public override uint EXP { get => G4 & 0xFFFFFF; set => G4 = (G4 & 0xFF000000u) | (value & 0xFFFFFF); }
 
     private byte PPUps { get => Data[0x28]; set => Data[0x28] = value; }
     public override int Move1_PPUps { get => (PPUps >> 0) & 3; set => PPUps = (byte)((PPUps & ~(3 << 0)) | ((value & 3) << 0)); }
@@ -149,7 +131,6 @@ public sealed class PK3TRE : PKM, IContestStats
     private ushort GA { get => ReadUInt16LittleEndian(Data[0x2A..]); set => WriteUInt16LittleEndian(Data[0x2A..], value); }
     /// <summary> Ball, numbered as in the hack (0 Strange, 1 Poké, 2 Great, 3 Ultra, 4 Master...). </summary>
     public int BallRaw { get => GA & 0x3F; set => GA = (ushort)((GA & ~0x3F) | (value & 0x3F)); }
-    private byte Nickname12 { get => (byte)((GA >> 6) & 0xFF); set => GA = (ushort)((GA & ~(0xFF << 6)) | (value << 6)); }
     #endregion
 
     #region Block A (0x2C)
@@ -363,13 +344,15 @@ public sealed class PK3TRE : PKM, IContestStats
         Core.Ball.Heal, Core.Ball.Net, Core.Ball.Nest, Core.Ball.Dive, Core.Ball.Dusk, Core.Ball.Timer,
         Core.Ball.Quick, Core.Ball.Repeat, Core.Ball.Luxury, Core.Ball.Level, Core.Ball.Lure, Core.Ball.Moon,
         Core.Ball.Friend, Core.Ball.Love, Core.Ball.Fast, Core.Ball.Heavy, Core.Ball.Dream, Core.Ball.Safari,
-        Core.Ball.Sport, Core.Ball.Beast, Core.Ball.Cherish,
+        Core.Ball.Sport, Core.Ball.None /* Park Ball: no PKHeX equivalent */, Core.Ball.Beast, Core.Ball.Cherish,
     ];
 
     private static byte BallFromRaw(int raw) => (uint)raw < RawToBall.Length ? (byte)RawToBall[raw] : (byte)Core.Ball.Poke;
 
     private static int BallToRaw(byte ball)
     {
+        if (ball == (byte)Core.Ball.None)
+            return 25; // Park Ball
         var index = Array.IndexOf(RawToBall, (Ball)ball);
         return index < 0 ? 1 : index;
     }

@@ -10,4 +10,6 @@ First release, based on PKHeX 26.10.18.
   shiny, ball, OT, all three ability slots and held items.
 - Moves are checked against the hack's learnsets (level-up, TM/tutor, egg and pre-evolutions), and learnable moves are highlighted.
 - Met locations use the hack's 359 map names.
+- In-game test fixes: EXP no longer corrupts when the Pokémon is saved (the hack keeps EXP in 24 bits),
+  nicknames are limited to 10 characters, and the ball list includes the hack's Park Ball slot, so Cherish Ball saves as Cherish.
 - Renamed to PKHeX-TRE (exe, window title, solution). The upstream update prompt is turned off.

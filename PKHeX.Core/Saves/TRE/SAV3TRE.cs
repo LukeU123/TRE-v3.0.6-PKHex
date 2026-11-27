@@ -163,12 +163,12 @@ public sealed class SAV3TRE : SaveFile
     public override IPersonalTable Personal => PersonalTableTRE.Instance;
 
     public override int MaxStringLengthTrainer => 7;
-    public override int MaxStringLengthNickname => 12;
+    public override int MaxStringLengthNickname => 10;
     public override ushort MaxMoveID => Legal.MaxMoveID_9;
     public override ushort MaxSpeciesID => TREData.MaxSpecies;
     public override int MaxAbilityID => TREData.Abilities.Length - 1;
     public override int MaxItemID => Math.Min(TREData.MaxRawItem, TREData.Items.Length - 1);
-    public override int MaxBallID => (int)Ball.Beast;
+    public override int MaxBallID => (int)Ball.Strange;
     public override GameVersion MaxGameID => Legal.MaxGameID_3;
     public override int MaxEV => EffortValues.Max255;
     public override int MaxMoney => 999999;
