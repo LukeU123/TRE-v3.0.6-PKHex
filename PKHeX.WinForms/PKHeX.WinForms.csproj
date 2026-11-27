@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>PKHeX</PackageId>
-    <AssemblyName>PKHeX</AssemblyName>
-    <Description>Pokémon Save Editor</Description>
+    <PackageId>PKHeX-TRE</PackageId>
+    <AssemblyName>PKHeX-TRE</AssemblyName>
+    <Description>Pokémon Save Editor (Team Rocket Edition fork)</Description>
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
     <StartupObject>PKHeX.WinForms.Program</StartupObject>
     <RootNamespace>PKHeX.WinForms</RootNamespace>

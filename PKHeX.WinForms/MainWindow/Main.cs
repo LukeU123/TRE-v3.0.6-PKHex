@@ -138,6 +138,9 @@ public partial class Main : Form
 
     public async Task CheckForUpdates()
     {
+        // PKHeX-TRE: don't offer upstream PKHeX updates (they can't open TRE saves).
+        if (Environment.ProcessPath is not null)
+            return;
         Version? latestVersion;
         // User might not be connected to the internet or with a flaky connection.
         try { latestVersion = UpdateUtil.GetLatestPKHeXVersion(); }
@@ -838,7 +841,7 @@ public partial class Main : Form
         var v = Program.CurrentVersion;
         string version = $"{2000+v.Major:00}{v.Minor:00}{v.Build:00}";
 #endif
-        return $"PKH{(HaX ? "a" : "e")}X ({version})";
+        return $"PKH{(HaX ? "a" : "e")}X-TRE ({version})";
     }
 
     private static string GetProgramTitle(SaveFile sav)

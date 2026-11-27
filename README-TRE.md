@@ -25,10 +25,10 @@ the hack uses its own save layout, Pokémon format, species list and item number
 
 ## Building (Visual Studio 2026 / 18.x, ".NET desktop development" workload)
 
-1. Open `PKHeX.sln`.
+1. Open `PKHeX-TRE.sln`.
 2. Set the build to **Release** and make **PKHeX.WinForms** the startup project. (Right-click it, then choose *Set as Startup Project*.)
 3. Choose *Build → Build Solution*. The first build downloads NuGet packages, so you need to be online.
-4. The program ends up in `PKHeX.WinForms\bin\Release\net10.0-windows\PKHeX.exe`.
+4. The program ends up in `PKHeX.WinForms\bin\Release\net10.0-windows\win-x64\PKHeX-TRE.exe`.
 
 ## What changed from upstream
 
