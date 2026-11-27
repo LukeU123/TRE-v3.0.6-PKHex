@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Translation problems (untranslated or wrong text in the game)
+    url: https://github.com/LukeU123/TRE-v3.0.6-English-Translation/issues/new/choose
+    about: Text issues in the game itself belong in the translation repo.

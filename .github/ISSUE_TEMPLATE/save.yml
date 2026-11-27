@@ -1,0 +1,23 @@
+name: Save problem
+description: A save won't open, or the game shows something different from the editor.
+labels: [save-format]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What's wrong?
+      description: e.g. "won't open", "Pokémon shows the wrong species/moves", "game says the save is corrupted after editing".
+    validations:
+      required: true
+  - type: textarea
+    id: ingame
+    attributes:
+      label: What the game shows vs what PKHeX-TRE shows
+      description: Screenshots of both help a lot.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I'm using the English TRE v3.0.6 patch.
+        - label: I tested on a copy of my save.

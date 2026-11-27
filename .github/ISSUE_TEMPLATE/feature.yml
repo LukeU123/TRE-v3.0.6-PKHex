@@ -1,0 +1,10 @@
+name: Feature request
+description: Something you'd like PKHeX-TRE to edit or show.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like?
+    validations:
+      required: true

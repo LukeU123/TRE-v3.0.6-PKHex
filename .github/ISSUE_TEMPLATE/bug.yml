@@ -1,0 +1,29 @@
+name: Bug or crash
+description: Something in PKHeX-TRE doesn't work, crashes or saves wrongly.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! **Please don't attach ROMs.** A save file is welcome if you're happy to share it.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you click, and what went wrong? Include the error text if a box popped up.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag images here.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Shown in the title bar, e.g. "PKHeX-TRE (20261018)".

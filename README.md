@@ -1,53 +1,104 @@
-PKHeX
-=====
-<div>
-  <span>English</span> / <a href=".github/README-es.md">Español</a> / <a href=".github/README-fr.md">Français</a> / <a href=".github/README-de.md">Deutsch</a> / <a href=".github/README-it.md">Italiano</a> / <a href=".github/README-ja.md">日本語</a> / <a href=".github/README-ko.md">한국어</a> / <a href=".github/README-zh-Hans.md">简体中文</a> / <a href=".github/README-zh-Hant.md">繁體中文</a>
+<div align="center">
+
+# PKHeX-TRE
+
+**A save editor for the English translation of _Pokémon Team Rocket Edition v3.0.6_**
+
+A fork of [PKHeX](https://github.com/kwsch/PKHeX) that can read and write Team Rocket Edition saves.
+
+[![Build](https://github.com/LukeU123/TRE-v3.0.6-PKHex/actions/workflows/build.yml/badge.svg)](https://github.com/LukeU123/TRE-v3.0.6-PKHex/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/LukeU123/TRE-v3.0.6-PKHex?include_prereleases&label=download&color=c8102e)](https://github.com/LukeU123/TRE-v3.0.6-PKHex/releases)
+![Platform](https://img.shields.io/badge/platform-Windows-0078d4)
+![.NET](https://img.shields.io/badge/.NET-10-512bd4)
+[![License: GPL v3](https://img.shields.io/badge/license-GPLv3-blue)](LICENSE)
+[![Based on PKHeX](https://img.shields.io/badge/based%20on-PKHeX%2026.10.18-orange)](https://github.com/kwsch/PKHeX)
+
+<img src="docs/images/editor_main.png" alt="PKHeX-TRE editing a Tentacool from a Team Rocket Edition save" width="760">
+
 </div>
 
-![License](https://img.shields.io/badge/License-GPLv3-blue.svg)
+---
 
-Pokémon core series save editor, programmed in [C#](https://en.wikipedia.org/wiki/C_Sharp_%28programming_language%29).
+## Why a fork?
 
-Supports the following files:
-* Save files ("main", \*.sav, \*.dsv, \*.dat, \*.gci, \*.bin)
-* GameCube Memory Card files (\*.raw, \*.bin) containing GC Pokémon savegames.
-* Individual Pokémon entity files (.pk\*, \*.ck3, \*.xk3, \*.pb7, \*.sk2, \*.bk4, \*.rk4)
-* Mystery Gift files (\*.pgt, \*.pcd, \*.pgf, .wc\*) including conversion to .pk\*
-* Importing GO Park entities (\*.gp1) including conversion to .pb7
-* Importing teams from Decrypted 3DS Battle Videos
-* Transferring from one generation to another, converting formats along the way.
+Team Rocket Edition is built on **pokeemerald-expansion**, and its saves aren't laid out like vanilla Emerald's.
+Normal PKHeX can't open them. This fork adds the pieces needed to read them:
 
-Data is displayed in a view which can be edited and saved.
-The interface can be translated with resource/external text files so that different languages can be supported.
+| | Vanilla Emerald | Team Rocket Edition |
+|---|---|---|
+| Save layout | 2 slots × 14 sectors | 1 slot × 28 sectors, its own signature |
+| Boxes | 14 | 24 |
+| Pokémon data | 3 ability bits, 8-bit met location | 3 ability slots, hidden nature, Tera type, 16-bit met location, 12-character nicknames |
+| Species | 386 | 1,600+ entries: Gen 1–9 plus forms plus the hack's own Pokémon |
+| Items and moves | Gen 3 IDs | The hack's own numbering |
 
-Pokémon Showdown sets and QR codes can be imported/exported to assist in sharing.
+All species stats, learnsets, item, move and ability names, and map names are pulled straight from the patched English ROM.
 
-PKHeX expects save files that are not encrypted with console-specific keys. Use a savedata manager to import and export savedata from the console ([Checkpoint](https://github.com/FlagBrew/Checkpoint), save_manager, [JKSM](https://github.com/J-D-K/JKSM), or SaveDataFiler).
+## Features
 
-**We do not support or condone cheating at the expense of others. Do not use significantly hacked Pokémon in battle or in trades with those who are unaware hacked Pokémon are in use.**
+| Feature | Status |
+|---|---|
+| Open and save `.sav` files, with valid checksums | ✅ |
+| Party and all 24 boxes | ✅ |
+| Species, level, nickname, nature, IVs/EVs, friendship, shiny, ball, OT | ✅ |
+| All three ability slots, including hidden abilities | ✅ |
+| Held items, from the hack's own item list | ✅ |
+| Moves checked against the hack's learnsets (level-up, TM/tutor, egg, pre-evolutions) | ✅ |
+| Learnable moves highlighted in the move dropdowns | ✅ |
+| Met locations, using the hack's own map names | ✅ |
+| Box names | ✅ |
+| Trainer info (money, badges) | 🔜 |
+| Bag / items pouch | 🔜 |
+| Sprites for the hack's own Pokémon | 🔜 (shows "?") |
+| Form names matched to the hack's form order | 🔜 |
 
-## Screenshots
+PKHeX's normal legality checker is switched off for these Pokémon, because its rules don't apply to a romhack. Only the move check runs.
 
-![Main Window](https://i.imgur.com/pIHdoTp.png)
+<img src="docs/images/editor_stats.png" alt="Stats tab" width="760">
 
-## Building
+## Download
 
-PKHeX is a Windows Forms application which requires [.NET 10](https://dotnet.microsoft.com/download/dotnet/10.0).
+Grab the latest `PKHeX-TRE.zip` from **[Releases](https://github.com/LukeU123/TRE-v3.0.6-PKHex/releases)**, extract it and run `PKHeX-TRE.exe`.
+It needs the [.NET 10 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/10.0); Windows will prompt you if it's missing.
 
-The executable can be built with any compiler that supports C# 14.
+> [!IMPORTANT]
+> **Always work on a copy of your save.** This is new software for an unofficial save format.
 
-### Build Configurations
+## Building it yourself
 
-Use the Debug or Release build configurations when building. There isn't any platform specific code to worry about!
+You need Visual Studio 2026 (18.x) with the **.NET desktop development** workload.
 
-## Dependencies
+1. Open `PKHeX-TRE.sln..
+2. Set the build to **Release** and make **PKHeX.WinForms** the startup project.
+3. Choose *Build → Build Solution*. The first build downloads NuGet packages.
+4. The program ends up in `PKHeX.WinForms\bin\Release\net10.0-windows\win-x64\PKHeX-TRE.exe`.
 
-PKHeX's QR code generation code is taken from [QRCoder](https://github.com/codebude/QRCoder), which is licensed under [the MIT license](https://github.com/codebude/QRCoder/blob/master/LICENSE.txt).
+From the command line, run `dotnet publish PKHeX.WinForms -c Release`.
 
-PKHeX's shiny sprite collection is taken from [pokesprite](https://github.com/msikma/pokesprite), which is licensed under [the MIT license](https://github.com/msikma/pokesprite/blob/master/LICENSE).
+## How it works
 
-PKHeX's Pokémon Legends: Arceus sprite collection is taken from the [National Pokédex - Icon Dex](https://www.deviantart.com/pikafan2000/art/National-Pokedex-Version-Delta-Icon-Dex-824897934) project and its abundance of collaborators and contributors.
+| File | What it does |
+|---|---|
+| [`PKHeX.Core/Saves/TRE/SAV3TRE.cs`](PKHeX.Core/Saves/TRE/SAV3TRE.cs) | Save file: sector map, checksums, party, boxes, trainer block |
+| [`PKHeX.Core/Saves/TRE/PK3TRE.cs`](PKHeX.Core/Saves/TRE/PK3TRE.cs) | The 80/100-byte Pokémon struct, with expansion bitfields, encryption and shuffle |
+| [`PKHeX.Core/Saves/TRE/TREData.cs`](PKHeX.Core/Saves/TRE/TREData.cs) | Species/form mapping, move ID mapping (the hack has no Z-Moves), names |
+| [`PKHeX.Core/Saves/TRE/TRELearn.cs`](PKHeX.Core/Saves/TRE/TRELearn.cs) | Move checking against the hack's learnsets |
+| [`PKHeX.Core/Saves/TRE/tre_data.json`](PKHeX.Core/Saves/TRE/tre_data.json) | Data pulled from the ROM by [`tools-tre/gen_tre_data.py`](tools-tre/gen_tre_data.py) |
+| [`PKHeX.WinForms/.../EditTRE.cs`](PKHeX.WinForms/Controls/PKM%20Editor/EditTRE.cs) | Loads and saves TRE Pokémon in the editor |
 
-### IDE
+Small hooks elsewhere (`SaveUtil`, `GameStrings`, `FilteredGameDataSource`, `LegalityAnalysis`, `PKMEditor`, `SAVEditor`) are marked with `TRE` comments.
 
-PKHeX can be opened with IDEs such as [Visual Studio](https://visualstudio.microsoft.com/downloads/) by opening the .sln or .csproj file.
+## Related
+
+- 🇬🇧 **[TRE v3.0.6 English Translation](https://github.com/LukeU123/TRE-v3.0.6-English-Translation)**: the BPS patch this editor is built for.
+- 🧰 **[PKHeX](https://github.com/kwsch/PKHeX)** by Kaphotics and contributors: the editor this is forked from. Its original README is in [`docs/upstream`](docs/upstream/README.md).
+
+## Found a problem?
+
+[Open an issue](https://github.com/LukeU123/TRE-v3.0.6-PKHex/issues/new/choose). A screenshot and the steps that caused it help a lot.
+**Please don't attach your ROM.** A save file is fine if you're happy to share it.
+
+## Licence
+
+GPLv3, the same as PKHeX. See [`LICENSE`](LICENSE). No ROMs or copyrighted game data are distributed here.
+Pokémon is © Nintendo, Game Freak and The Pokémon Company. Team Rocket Edition is the work of its own fan developers.
