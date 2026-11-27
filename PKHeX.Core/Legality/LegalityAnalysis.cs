@@ -116,8 +116,11 @@ public sealed class LegalityAnalysis
         Info = new LegalInfo(pk, Parse);
         if (pk is PK3TRE)
         {
-            // Romhack data: no legality rules apply. Treat as valid so the editor doesn't flag everything.
-            Valid = true;
+            // Romhack: PKHeX's encounter/legality rules don't apply. Only moves are checked, against the hack's learnsets.
+            TRELearn.Verify(pk, Info.Moves);
+            for (int i = 0; i < Info.Relearn.Length; i++)
+                Info.Relearn[i] = MoveResult.Empty;
+            Valid = MoveResult.AllValid(Info.Moves);
             Parsed = true;
             return;
         }

@@ -39,8 +39,17 @@ public sealed class LegalMoveInfo
         var spanEval = rentEval.AsSpan(0, spanLearn.Length);
         try
         {
-            LearnPossible.Get(la.Entity, la.EncounterOriginal, la.Info.EvoChainsAllGens, spanLearn);
-            ComputeEval(spanEval, spanLearn, la);
+            if (la.Entity is PK3TRE)
+            {
+                TRELearn.GetLearnable(la.Entity, spanLearn);
+                for (int i = 0; i < spanEval.Length; i++)
+                    spanEval[i] = spanLearn[i] ? Learn : None;
+            }
+            else
+            {
+                LearnPossible.Get(la.Entity, la.EncounterOriginal, la.Info.EvoChainsAllGens, spanLearn);
+                ComputeEval(spanEval, spanLearn, la);
+            }
             if (spanEval.SequenceEqual(AllowedMoves))
                 return false;
             spanEval.CopyTo(AllowedMoves);

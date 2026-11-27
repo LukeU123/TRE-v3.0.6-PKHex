@@ -19,8 +19,30 @@ for i in range(SP_N):
         'items': [u16(b + 14), u16(b + 16)], 'gender': rom[b + 18], 'egg': rom[b + 19],
         'fr': rom[b + 20], 'growth': rom[b + 21], 'eggs': [rom[b + 22], rom[b + 23]],
         'abil': [u16(b + 24), u16(b + 26), u16(b + 28)]})
+def ptr_at(o):
+    p = u32(o)
+    return p - 0x08000000 if 0x08000000 <= p < 0x0A000000 else None
+def u16_list(o, step=2, limit=400):
+    out = []
+    while o is not None and u16(o) != 0xFFFF and len(out) < limit:
+        out.append(o); o += step
+    return out
+for e in species:  # learnsets + evolutions (pointers inside the species struct)
+    b = SP + e['id'] * SP_W
+    e['lv'] = [x for o in u16_list(ptr_at(b + 144), 4) for x in (u16(o), u16(o + 2))]  # move, level
+    e['tm'] = [u16(o) for o in u16_list(ptr_at(b + 148))]                               # TMs + tutors
+    e['eggm'] = [u16(o) for o in u16_list(ptr_at(b + 152))]
+    e['evo'] = [u16(o + 4) for o in u16_list(ptr_at(b + 156), 12, 20)]                  # target raw species
+def title(s):
+    import re
+    s = re.sub(r'\{[^}]*\}\s*', '', s).replace('[PK][MN]', 'POKéMON')
+    return ' '.join(w.capitalize() for w in s.split(' ')).replace("'S", "'s").replace('S.s.', 'S.S.').replace('S.a.', 'S.A.').replace(' Of ', ' of ')
+MS = 0xe6f864  # region map sections: x, y, w, h, name*
+locations = []
+while (p := ptr_at(MS + len(locations) * 8 + 4)) is not None and len(locations) < 1000:
+    locations.append(title((decode(rom, p, 40)[0] or '').strip()))
 items = [text_at_ptr(0x8d1800 + i * 44) for i in range(1049)]
 moves = [text_at_ptr(0x939a4c + i * 60) for i in range(935)]
 abilities = [decode(rom, 0xe65b68 + i * 0x1C, 0x1C)[0] for i in range(320)]
-json.dump({'species': species, 'items': items, 'moves': moves, 'abilities': abilities},
+json.dump({'species': species, 'items': items, 'moves': moves, 'abilities': abilities, 'locations': locations},
           open(sys.argv[2], 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

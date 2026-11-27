@@ -11,12 +11,13 @@ the hack uses its own save layout, Pokémon format, species list and item number
   moves, held item, ability (all three slots, including hidden), nature, IVs/EVs, shiny, ball, OT, friendship.
 - Box names.
 - Item and move lists use the translated English names from the ROM.
-- Legality checking is switched off for these Pokémon (PKHeX's rules don't apply to the hack).
+- Moves are checked against the hack's own learnsets (level-up, TM/tutor and egg moves, including pre-evolutions).
+  Learnable moves are highlighted in the move dropdowns. Everything else in PKHeX's legality checker is switched off.
+- Met locations use the hack's own map names.
 
 ## Not yet
 
 - Trainer info (money, badges) and the bag: those buttons are hidden for now.
-- Met locations show Emerald place names, not the hack's.
 - Form names follow PKHeX's lists, which may not match the hack's form order. Some forms may show the wrong sprite.
 - The hack's own Pokémon show a "?" sprite.
 - Showdown export leaves out the held item.

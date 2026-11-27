@@ -1294,15 +1294,20 @@ public sealed partial class PKMEditor : UserControl, IMainEditor
             if (group is GameVersion.Invalid || version is GameVersion.Any)
                 version = group = context.GetSingleGameVersion();
         }
-        if (group != origintrack || context != originFormat)
+        bool isTRE = Entity is PK3TRE;
+        if (group != origintrack || context != originFormat || isTRE != originTRE)
             ReloadMetLocations(version, context);
         origintrack = group;
         originFormat = context;
+        originTRE = isTRE;
     }
+
+    private bool originTRE;
 
     private void ReloadMetLocations(GameVersion version, EntityContext context)
     {
-        var metList = GameInfo.GetLocationList(version, context, egg: false);
+        // Team Rocket Edition: the hack's own map sections (16-bit), not Emerald's.
+        var metList = Entity is PK3TRE ? TREData.LocationDataSource : GameInfo.GetLocationList(version, context, egg: false);
         CB_MetLocation.DataSource = new BindingSource(metList, string.Empty);
         CB_MetLocation.DropDownWidth = GetWidth(metList, CB_MetLocation.Font);
 

@@ -13,6 +13,7 @@ public partial class PKMEditor
         if (Entity is not PK3TRE pk)
             throw new FormatException(nameof(Entity));
 
+        L_ExtraBytes.Visible = FLP_ExtraBytes.Visible = false; // no spare bytes in this format
         LoadMisc3(pk);
         LoadMisc1(pk);
         LoadMisc2(pk);

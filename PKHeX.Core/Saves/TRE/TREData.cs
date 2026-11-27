@@ -27,6 +27,11 @@ public static class TREData
         public ushort Species; // PKHeX species (national, or custom >= FirstCustomSpecies)
         public byte Form;
         public PersonalInfoTRE Personal = null!;
+        public ushort[] LevelUp = [];  // hack move ID, level, hack move ID, level...
+        public ushort[] Teach = [];    // TMs and tutors (hack move IDs)
+        public ushort[] Egg = [];      // egg moves (hack move IDs)
+        public ushort[] EvolvesInto = []; // raw species IDs
+        public int PreEvolution = -1;  // raw species ID, -1 if none
     }
 
     public static readonly SpeciesEntry[] Raw;
@@ -63,6 +68,10 @@ public static class TREData
             e.Name = s.GetProperty("name").GetString() ?? string.Empty;
             int nat = s.GetProperty("nat").GetInt32();
             e.Personal = new PersonalInfoTRE(s);
+            e.LevelUp = ReadU16(s, "lv");
+            e.Teach = ReadU16(s, "tm");
+            e.Egg = ReadU16(s, "eggm");
+            e.EvolvesInto = ReadU16(s, "evo");
 
             if (i == 0 || string.IsNullOrEmpty(e.Name))
             {
@@ -102,6 +111,17 @@ public static class TREData
             if (e.Species != 0)
                 e.Personal.FormCount = FormCounts[e.Species];
         }
+
+        foreach (var e in Raw)
+        {
+            foreach (var target in e.EvolvesInto)
+            {
+                if (target < Raw.Length && target != e.Raw && Raw[target].PreEvolution < 0)
+                    Raw[target].PreEvolution = e.Raw;
+            }
+        }
+
+        Locations = root.TryGetProperty("locations", out var locs) ? ReadStrings(locs) : [];
 
         CustomSpeciesNames = [.. custom];
         MaxSpecies = max;
@@ -175,6 +195,40 @@ public static class TREData
             buf[n++] = char.ToLowerInvariant(c);
         }
         return new string(buf[..n]);
+    }
+
+    /// <summary> The hack's map section names, indexed by met location. </summary>
+    public static readonly string[] Locations;
+
+    private static IReadOnlyList<ComboItem>? _locationSource;
+
+    /// <summary> Met location choices (every named map section), sorted by name. </summary>
+    public static IReadOnlyList<ComboItem> LocationDataSource => _locationSource ??= BuildLocationSource();
+
+    private static List<ComboItem> BuildLocationSource()
+    {
+        var list = new List<ComboItem>(Locations.Length);
+        for (int i = 0; i < Locations.Length; i++)
+        {
+            var name = Locations[i];
+            if (name.Length != 0)
+                list.Add(new ComboItem(name, i));
+        }
+        list.Sort((a, b) => a.Text == b.Text ? a.Value.CompareTo(b.Value) : string.CompareOrdinal(a.Text, b.Text));
+        return list;
+    }
+
+    public static string GetLocationName(int location) => (uint)location < Locations.Length && Locations[location].Length != 0 ? Locations[location] : $"#{location}";
+
+    private static ushort[] ReadU16(JsonElement obj, string name)
+    {
+        if (!obj.TryGetProperty(name, out var arr))
+            return [];
+        var result = new ushort[arr.GetArrayLength()];
+        int i = 0;
+        foreach (var v in arr.EnumerateArray())
+            result[i++] = (ushort)v.GetInt32();
+        return result;
     }
 
     private static string[] ReadStrings(JsonElement arr)
