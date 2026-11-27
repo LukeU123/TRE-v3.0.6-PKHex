@@ -114,6 +114,13 @@ public sealed class LegalityAnalysis
         SlotOrigin = source;
 
         Info = new LegalInfo(pk, Parse);
+        if (pk is PK3TRE)
+        {
+            // Romhack data: no legality rules apply. Treat as valid so the editor doesn't flag everything.
+            Valid = true;
+            Parsed = true;
+            return;
+        }
 #if SUPPRESS
         try
 #endif

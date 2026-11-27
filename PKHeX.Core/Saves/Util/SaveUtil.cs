@@ -626,6 +626,10 @@ public static class SaveUtil
 
     private static SaveFile? GetSaveFileInternal(Memory<byte> data)
     {
+        // Pokémon Team Rocket Edition (pokeemerald-expansion romhack): single 28-sector save.
+        if (SAV3TRE.IsTRE(data.Span))
+            return new SAV3TRE(data);
+
         var typeInfo = GetTypeInfo(data.Span);
         return GetSaveFileInternal(data, typeInfo);
     }

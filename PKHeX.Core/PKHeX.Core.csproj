@@ -30,6 +30,7 @@
   <ItemGroup>
     <None Remove="Resources\**" />
     <EmbeddedResource Include="Resources\**" />
+    <EmbeddedResource Include="Saves\TRE\tre_data.json" LogicalName="PKHeX.Core.Saves.TRE.tre_data.json" />
   </ItemGroup>
 
 </Project>

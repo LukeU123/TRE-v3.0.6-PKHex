@@ -1370,6 +1370,13 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
         B_OpenFashion.Visible = sav is SAV9SV or SAV9ZA;
         B_Donuts.Visible = sav is SAV9ZA { SaveRevision: >= 1 };
 
+        if (sav is SAV3TRE)
+        {
+            // Team Rocket Edition: only party/box editing is mapped so far.
+            B_OpenTrainerInfo.Visible = B_OpenItemPouch.Visible = B_Blocks.Visible = false;
+            B_OpenBoxLayout.Visible = B_OpenPokedex.Visible = B_OpenHallofFame.Visible = false;
+        }
+
         var list = FLP_SAVtools.Controls.OfType<Control>().OrderBy(z => z.Text).ToArray();
         FLP_SAVtools.Controls.Clear();
         FLP_SAVtools.Controls.AddRange(list);

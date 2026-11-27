@@ -101,6 +101,7 @@ public sealed class GameStrings : IBasicStrings
         itemlist = Get("items");
         characteristics = Get("character");
         specieslist = Get("species");
+        TREData.ExtendStrings(ref specieslist, ref abilitylist); // Team Rocket Edition: custom species + abilities
         wallpapernames = Get("wallpaper");
         groundtiletypes = Get("groundtile");
         gamelist = Get("games");

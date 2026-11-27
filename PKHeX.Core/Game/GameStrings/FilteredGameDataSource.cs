@@ -17,7 +17,21 @@ public sealed class FilteredGameDataSource
         Relearn = sav is SAV7SM sm
             ? GetFilteredMoves(sm.Context, source, HaX, Legal.MaxMoveID_7_USUM) // allow for US/UM relearn move limits on S/M
             : Moves.ToList();
-        if (sav.Generation > 1)
+        if (sav is SAV3TRE)
+        {
+            // Team Rocket Edition: moves are official IDs (minus Z-Moves); items use the hack's own numbering.
+            Moves = Moves.Where(m => TREData.IsMoveInGame((ushort)m.Value)).ToList();
+            Relearn = Moves.ToList();
+            var tre = new List<ComboItem>();
+            for (int i = 0; i <= sav.MaxItemID; i++)
+            {
+                var name = TREData.Items[i];
+                if (i == 0 || (name.Length != 0 && !name.StartsWith('?')))
+                    tre.Add(new ComboItem(i == 0 ? source.Strings.itemlist[0] : name, i));
+            }
+            Items = tre.OrderBy(z => z.Value == 0 ? 0 : 1).ThenBy(z => z.Text).ToList();
+        }
+        else if (sav.Generation > 1)
         {
             var items = Source.GetItemDataSource(sav.Version, sav.Context, sav.HeldItems, HaX);
             items.RemoveAll(i => i.Value > sav.MaxItemID);

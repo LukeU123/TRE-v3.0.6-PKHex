@@ -28,7 +28,7 @@ public class EntitySummary : IFatefulEncounterReadOnly // do NOT seal, allow inh
     public string Move2 => Get(Strings.movelist, Entity.Move2);
     public string Move3 => Get(Strings.movelist, Entity.Move3);
     public string Move4 => Get(Strings.movelist, Entity.Move4);
-    public string HeldItem => GetSpan(Strings.GetItemStrings(Entity.Context), Entity.HeldItem);
+    public string HeldItem => Entity is PK3TRE ? TREData.GetItemName(Entity.HeldItem) : GetSpan(Strings.GetItemStrings(Entity.Context), Entity.HeldItem);
     public string HP => Stats[0].ToString();
     public string ATK => Stats[1].ToString();
     public string DEF => Stats[2].ToString();

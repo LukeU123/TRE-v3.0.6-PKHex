@@ -276,7 +276,7 @@ public sealed partial class PKMEditor : UserControl, IMainEditor
         TB_Nickname.DisplayContext = TB_OT.DisplayContext = TB_HT.DisplayContext = pk.Context;
     }
 
-    private (Action Load, Func<PKM> Set) GetLoadSet(PKM pk) => GetLoadSet(pk.Context);
+    private (Action Load, Func<PKM> Set) GetLoadSet(PKM pk) => pk is PK3TRE ? (new Action(PopulateFieldsTRE), new Func<PKM>(PrepareTRE)) : GetLoadSet(pk.Context);
 
     private (Action Load, Func<PKM> Set) GetLoadSet(EntityContext context) => context switch
     {
