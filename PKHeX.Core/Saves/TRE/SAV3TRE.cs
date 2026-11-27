@@ -149,6 +149,23 @@ public sealed class SAV3TRE : SaveFile, IBoxDetailName
         }
     }
 
+    /// <summary>
+    /// Editors work on a clone and copy it back here. The working data lives in the block buffers (not in Data
+    /// until written), so copy those directly.
+    /// </summary>
+    public override void CopyChangesFrom(SaveFile sav)
+    {
+        if (sav is not SAV3TRE other)
+        {
+            base.CopyChangesFrom(sav);
+            return;
+        }
+        other.SmallData.CopyTo(SmallData, 0);
+        other.LargeData.CopyTo(LargeData, 0);
+        other.StorageData.CopyTo(StorageData, 0);
+        State.Edited = true;
+    }
+
     protected override SaveFile CloneInternal()
     {
         WriteSectors();

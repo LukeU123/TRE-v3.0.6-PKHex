@@ -15,5 +15,6 @@ First release, based on PKHeX 26.10.18.
 - Nature changes no longer reroll the PID, which gave random natures (the hack stores nature as a modifier).
   Changing the ability no longer rerolls the PID either.
 - **Trainer Info**: name, TID/SID, gender, money and play time.
-- **Items**: the hack's 8 bag pockets plus the PC, with sizes and item lists taken from the ROM.
+- **Items**: the hack's 8 bag pockets plus the PC, with sizes and item lists taken from the ROM. TMs and HMs show their move (e.g. "TM235 Crabhammer").
+- Trainer Info changes now save (the editor's copy-back skipped the save's block buffers).
 - Renamed to PKHeX-TRE (exe, window title, solution). The upstream update prompt is turned off.

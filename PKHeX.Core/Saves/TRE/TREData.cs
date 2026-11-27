@@ -122,7 +122,8 @@ public static class TREData
         }
 
         Locations = root.TryGetProperty("locations", out var locs) ? ReadStrings(locs) : [];
-        ItemPockets = root.TryGetProperty("item_pockets", out var ip) ? Array.ConvertAll(ReadU16(root, "item_pockets"), x => (byte)x) : [];
+        ItemPockets = Array.ConvertAll(ReadU16(root, "item_pockets"), x => (byte)x);
+        TMMoves = ReadU16(root, "tm_moves");
 
         CustomSpeciesNames = [.. custom];
         MaxSpecies = max;
@@ -201,6 +202,9 @@ public static class TREData
     /// <summary> Bag pocket of each item, as the ROM defines it (see <see cref="PlayerBagTRE"/>). </summary>
     public static readonly byte[] ItemPockets;
 
+    /// <summary> Move taught by each TM (TM01 first), then each HM; hack move IDs. </summary>
+    public static readonly ushort[] TMMoves;
+
     /// <summary> Item names for display (the game's special glyphs written out). Empty or placeholder names are blank. </summary>
     public static string[] GetItemDisplayNames()
     {
@@ -214,8 +218,17 @@ public static class TREData
                 continue;
             }
             result[i] = name.Replace("[PO][Ké][BL][OC][K]", "Pokéblock").Replace("[PK][MN]", "Pokémon");
+            if (GetTMIndex(name) is var tm and >= 0 && tm < TMMoves.Length)
+                result[i] += $" {GetMoveName(TMMoves[tm])}"; // e.g. "TM235 Crabhammer"
         }
         return result;
+    }
+
+    private static int GetTMIndex(string name)
+    {
+        if (name.Length < 4 || name[1] != 'M' || !int.TryParse(name.AsSpan(2), out var n) || n <= 0)
+            return -1;
+        return name[0] switch { 'T' => n - 1, 'H' => 246 + n - 1, _ => -1 };
     }
 
     /// <summary> The hack's map section names, indexed by met location. </summary>
