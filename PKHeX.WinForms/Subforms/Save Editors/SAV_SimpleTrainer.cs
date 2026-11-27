@@ -185,6 +185,15 @@ public partial class SAV_SimpleTrainer : Form
             TB_OTName.Click += (_, _) => ClickOT(s.PlayerData.OriginalTrainerTrash, TB_OTName);
         }
 
+        if (SAV is SAV3TRE)
+        {
+            // Team Rocket Edition: name, IDs, gender, money and play time are mapped; badges and options not yet.
+            GB_Map.Visible = GB_Badges.Visible = GB_Options.Visible = false;
+            L_Started.Visible = L_Fame.Visible = false;
+            CAL_AdventureStartDate.Visible = CAL_HoFDate.Visible = false;
+            CAL_AdventureStartTime.Visible = CAL_HoFTime.Visible = false;
+        }
+
         for (int i = 0; i < cba.Length; i++)
         {
             cba[i].Visible = true;

@@ -24,7 +24,9 @@ public sealed partial class SAV_Inventory : Form
         tabControl1.ImageList = IL_Pouch;
         WinFormsUtil.TranslateInterface(this, Main.CurrentLanguage);
         Origin = sav;
-        itemlist = [.. GameInfo.Strings.GetItemStrings(sav.Context, sav.Version)]; // copy
+        itemlist = sav is SAV3TRE // Team Rocket Edition: the hack's own item numbering and names
+            ? TREData.GetItemDisplayNames()
+            : [.. GameInfo.Strings.GetItemStrings(sav.Context, sav.Version)]; // copy
 
         for (int i = 0; i < itemlist.Length; i++)
         {
@@ -327,7 +329,10 @@ public sealed partial class SAV_Inventory : Form
     private void UpdateSprite(DataGridViewCellCollection cells, int itemID)
     {
         var context = Origin.Context;
-        itemID = ItemConverter.GetItemDisplay(itemID, context);
+        if (Origin is SAV3TRE)
+            (itemID, context) = (TREData.GetOfficialItem(itemID), EntityContext.Gen9); // icon of the matching official item
+        else
+            itemID = ItemConverter.GetItemDisplay(itemID, context);
         cells[ColumnSprite].Value = itemID == 0 ? _none : SpriteUtil.Spriter.GetItemSprite(itemID, context);
     }
 

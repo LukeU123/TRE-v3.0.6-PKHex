@@ -173,6 +173,17 @@ public sealed class SAV3TRE : SaveFile, IBoxDetailName
     public override int MaxEV => EffortValues.Max255;
     public override int MaxMoney => 999999;
 
+    /// <summary> Encryption key for money and bag quantities (SaveBlock2 0x44 in this hack; Emerald uses 0xAC). </summary>
+    public uint SecurityKey => ReadUInt32LittleEndian(Small[0x44..]);
+
+    public override uint Money
+    {
+        get => ReadUInt32LittleEndian(Large[0x490..]) ^ SecurityKey;
+        set => WriteUInt32LittleEndian(Large[0x490..], Math.Min(value, (uint)MaxMoney) ^ SecurityKey);
+    }
+
+    public override PlayerBag Inventory => new PlayerBagTRE(this);
+
     private static readonly ushort[] AllHeldItems = BuildHeldItems();
     private static ushort[] BuildHeldItems()
     {

@@ -42,7 +42,8 @@ locations = []
 while (p := ptr_at(MS + len(locations) * 8 + 4)) is not None and len(locations) < 1000:
     locations.append(title((decode(rom, p, 40)[0] or '').strip()))
 items = [text_at_ptr(0x8d1800 + i * 44) for i in range(1049)]
+item_pockets = [rom[0x8d1800 + i * 44 + 10] >> 3 for i in range(1049)]  # 0 items, 1 medicine, 2 TM/HM, 3 key, 4 balls, 5 held, 6 berries, 7 mega
 moves = [text_at_ptr(0x939a4c + i * 60) for i in range(935)]
 abilities = [decode(rom, 0xe65b68 + i * 0x1C, 0x1C)[0] for i in range(320)]
-json.dump({'species': species, 'items': items, 'moves': moves, 'abilities': abilities, 'locations': locations},
+json.dump({'species': species, 'items': items, 'moves': moves, 'abilities': abilities, 'locations': locations, 'item_pockets': item_pockets},
           open(sys.argv[2], 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))

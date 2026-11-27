@@ -1372,8 +1372,8 @@ public partial class SAVEditor : UserControl, ISlotViewer<PictureBox>, ISaveFile
 
         if (sav is SAV3TRE)
         {
-            // Team Rocket Edition: only party/box editing is mapped so far.
-            B_OpenTrainerInfo.Visible = B_OpenItemPouch.Visible = B_Blocks.Visible = false;
+            // Team Rocket Edition: party, boxes, trainer basics and the bag are mapped so far.
+            B_Blocks.Visible = false;
             B_OpenBoxLayout.Visible = B_OpenPokedex.Visible = B_OpenHallofFame.Visible = false;
         }
 

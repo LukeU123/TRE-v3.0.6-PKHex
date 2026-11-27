@@ -47,8 +47,9 @@ All species stats, learnsets, item, move and ability names, and map names are pu
 | Learnable moves highlighted in the move dropdowns | ✅ |
 | Met locations, using the hack's own map names | ✅ |
 | Box names | ✅ |
-| Trainer info (money, badges) | 🔜 |
-| Bag / items pouch | 🔜 |
+| Trainer info: name, IDs, gender, money, play time | ✅ |
+| Bag: all 8 pockets (Items, Medicine, Balls, TMs/HMs, Berries, Held Items, Mega Stones, Key Items) plus the PC | ✅ |
+| Badges | 🔜 |
 | Sprites for the hack's own Pokémon | 🔜 (shows "?") |
 | Form names matched to the hack's form order | 🔜 |
 

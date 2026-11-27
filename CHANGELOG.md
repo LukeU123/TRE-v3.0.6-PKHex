@@ -14,4 +14,6 @@ First release, based on PKHeX 26.10.18.
   nicknames are limited to 10 characters, and the ball list includes the hack's Park Ball slot, so Cherish Ball saves as Cherish.
 - Nature changes no longer reroll the PID, which gave random natures (the hack stores nature as a modifier).
   Changing the ability no longer rerolls the PID either.
+- **Trainer Info**: name, TID/SID, gender, money and play time.
+- **Items**: the hack's 8 bag pockets plus the PC, with sizes and item lists taken from the ROM.
 - Renamed to PKHeX-TRE (exe, window title, solution). The upstream update prompt is turned off.

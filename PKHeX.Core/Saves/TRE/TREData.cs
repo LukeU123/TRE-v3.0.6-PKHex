@@ -122,6 +122,7 @@ public static class TREData
         }
 
         Locations = root.TryGetProperty("locations", out var locs) ? ReadStrings(locs) : [];
+        ItemPockets = root.TryGetProperty("item_pockets", out var ip) ? Array.ConvertAll(ReadU16(root, "item_pockets"), x => (byte)x) : [];
 
         CustomSpeciesNames = [.. custom];
         MaxSpecies = max;
@@ -195,6 +196,26 @@ public static class TREData
             buf[n++] = char.ToLowerInvariant(c);
         }
         return new string(buf[..n]);
+    }
+
+    /// <summary> Bag pocket of each item, as the ROM defines it (see <see cref="PlayerBagTRE"/>). </summary>
+    public static readonly byte[] ItemPockets;
+
+    /// <summary> Item names for display (the game's special glyphs written out). Empty or placeholder names are blank. </summary>
+    public static string[] GetItemDisplayNames()
+    {
+        var result = new string[Items.Length];
+        for (int i = 0; i < result.Length; i++)
+        {
+            var name = Items[i];
+            if (i == 0 || name.Length == 0 || name.StartsWith('?'))
+            {
+                result[i] = string.Empty;
+                continue;
+            }
+            result[i] = name.Replace("[PO][Ké][BL][OC][K]", "Pokéblock").Replace("[PK][MN]", "Pokémon");
+        }
+        return result;
     }
 
     /// <summary> The hack's map section names, indexed by met location. </summary>
